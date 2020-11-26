@@ -1,0 +1,7 @@
+[settings]
+  ID = "dc74cd96-c2f6-449a-8831-737354ec0c8d"
+
+[build]
+  command = "jekyll build"
+  publish = "_site"
+  environment = {JEKYLL_ENV = "production"}

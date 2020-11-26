@@ -1,0 +1,60 @@
+---
+layout: default
+skip_signup: true
+js:
+  - js/submit.js
+---
+
+<h2> Submit to <a href="/">Kleroteria</a></h2>
+
+<p class="post-form-related">
+Type or paste your post below.
+</p>
+
+<p class="post-form-related">
+{% include post_requirements.html %}
+</p>
+
+<p>
+  <noscript>
+    Sorry, you must have javascript enabled to submit a post (it involves the AWS SDK and can't be done with an html form).
+    You can read more about the architecture <a href="https://www.simonmweber.com/2018/07/09/running-kleroteria-for-free-by-abusing-free-tiers.html">here</a>.
+    <noscript><style> .jsonly { display: none } </style></noscript>
+  </noscript>
+  <div id="post" class="jsonly">
+    <div id="post-form">
+        <label for="subjectInput">subject line</label>
+        <input id="subjectInput" type="text" name="subject" style="width: 100%; font-family: serif;"> 
+        <br/>
+        <br/>
+        <label for="postInput">your post (<span id="charCount">3000</span> characters left) </label>
+        <br/>
+        <textarea id="postInput" type="text" name="post" rows="25" style="width: 100%; font-family: serif;"></textarea>
+        <br/>
+        <br/>
+        <button type="button" onclick="submitPost();">
+            Submit
+        </button>
+    </div>
+    <div id="spinner" class="spinner" style="display:none">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+    <div id="post-success" style="display:none;">
+      <p>
+        Thank you for contributing. Posts are sent in the order they're received, so it may be a few weeks until yours is sent.
+        Consider spreading the word while you wait so more people can see your post.
+      </p>
+    </div>
+    <div id="invalid-post" style="display:none;">
+        A subject line must be provided and posts must be under 3000 characters.
+    </div>
+    <div id="invalid-link" style="display:none;">
+        It doesn't look like you followed a valid link to get here.
+    </div>
+  </div>
+</p>
+{% include share.html %}

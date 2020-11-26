@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  {% assign description = page.description %}
+  {% unless description %}{% assign description = site.description %}{% endunless %}
+  <meta name="description" content="{{ description }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% if page.noindex %}
+  <meta name="robots" content="noindex, follow" />
+  {% endif %}
+
+  {% assign title = page.title %}
+  {% unless title %}{% assign title = site.title %}{% endunless %}
+  <title>{{ title }}</title>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=PY409Kdbdy">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=PY409Kdbdy">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=PY409Kdbdy">
+  <link rel="manifest" href="/site.webmanifest?v=PY409Kdbdy">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=PY409Kdbdy" color="#5bbad5">
+  <link rel="shortcut icon" href="/favicon.ico?v=PY409Kdbdy">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/webfont.css">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/solo.css">
+  <link rel="stylesheet" href="/css/spinner.css">
+
+  {% comment %}
+  <link rel="stylesheet" href="/css/syntax.css">
+  {% endcomment %}
+
+  {% comment %}
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/rrssb.css">
+  <link rel="canonical" href="{{ site.url }}" />
+  {% endcomment %}
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120581381-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-120581381-1');
+  </script>
+
+</head>
+<body>
+  <article>
+   <div class="container">
+    {{ content }}
+  <hr>
+
+  {% unless page.skip_signup %}
+  <p>
+
+  <noscript>
+      Sorry, you must have javascript enabled to join (it involves the AWS SDK and can't be done with an html form).
+      You can read more about the architecture <a href="https://www.simonmweber.com/2018/07/09/running-kleroteria-for-free-by-abusing-free-tiers.html">here</a>.
+      <noscript><style> .jsonly { display: none } </style></noscript>
+  </noscript>
+  <div id="signup" class="jsonly" style="text-align:center;">
+      <div id="signup-form">
+          <label for="emailInput">your email:</label>
+          <input id="emailInput" type="email" name="email" autocomplete="email">
+          <button type="button" onclick="submitSignup();">
+              Join
+          </button>
+      </div>
+	  <div id="spinner" class="spinner" style="display:none">
+		  <div class="rect1"></div>
+		  <div class="rect2"></div>
+		  <div class="rect3"></div>
+		  <div class="rect4"></div>
+		  <div class="rect5"></div>
+	  </div>
+      <div id="signup-success" style="display:none;">
+      </div>
+      <div id="invalid-email" style="display:none;">
+          That does not seem like a valid email.
+      </div>
+      <div id="email-suggestion" style="display:none;">
+      </div>
+  </div>
+  </p>
+  {% include share.html %}
+  {% endunless %}
+
+    </div>
+  </article>
+  {% comment %}
+  <script src="{{ site.baseurl }}/scripts/rrssb.min.js"></script>
+  {% endcomment %}
+
+  {% if jekyll.environment == "production" %}
+  <script defer src="https://cdn.ravenjs.com/3.26.1/raven.min.js" crossorigin="anonymous"></script>
+  {% endif %}
+
+  <script defer src="/js/aws-sdk-2.252.1.custom.min.js"></script>
+  {% if jekyll.environment == "production" %}
+  <script defer src="/js/settings_prod.js"></script>
+  {% else %}
+  <script defer src="/js/settings_dev.js"></script>
+  {% endif %}
+  {% unless page.skip_signup %}
+  <script defer src="/js/mailcheck.min.js"></script>
+  <script defer src="/js/signup.js"></script>
+  {% endunless %}
+  {% for js in page.js %}
+  <script defer src="{{ js }}"></script>
+  {% endfor %}
+</body>
+</html>

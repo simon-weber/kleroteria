@@ -1,0 +1,28 @@
+# Shared base config between dev and prod.
+
+title: Kleroteria
+email: simon@simonmweber.com
+description: >- # this means to ignore newlines until "baseurl:"
+  An email lottery and spiritual successor to The Listserve.
+baseurl: ""
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins: []
+
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - netlify.toml
+
+# Good Clean Read settings
+tag_text: Kleroteria
+font-awesome-include: true # make this false if you don't need font-awesome

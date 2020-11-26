@@ -1,0 +1,9 @@
+dist/
+*.egg-info
+
+_site
+_netlify
+.sass-cache
+.jekyll-metadata
+
+exp/

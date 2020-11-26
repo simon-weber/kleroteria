@@ -1,0 +1,15 @@
+region: us-east-1
+
+function_name: manual_email
+handler: service.handler
+description: Send one-off emails to the list.
+runtime: python3.8
+role: k8a_lambda_ingest_role
+
+timeout: 300
+memory_size: 128
+
+environment_variables:
+    k8a_env: production
+    SENTRY_DSN: 'https://7354fe0b5b1d46b4ae20aa0f6d0e30ba:7de60f9cdee34ce7b6322d384dd6c0f1@sentry.io/1222602'
+    BOUNCE_EMAIL: ${BOUNCE_EMAIL}

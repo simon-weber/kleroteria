@@ -1,0 +1,5 @@
+-r requirements.txt
+# TODO can this be made relative?
+# see https://github.com/jazzband/pip-tools/issues/204
+file:///home/simon/kleroteria#egg=kleroteria==0.0.1
+localstack-client # only needed in dev, but used via local lambda settings imports

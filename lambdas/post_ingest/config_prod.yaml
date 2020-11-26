@@ -1,0 +1,16 @@
+region: us-east-1
+
+function_name: post_ingest
+handler: service.handler
+description: Consume and process post events.
+runtime: python3.8
+role: k8a_lambda_ingest_role
+
+timeout: 600
+memory_size: 128
+
+environment_variables:
+    k8a_env: production
+    SENTRY_DSN: 'https://7354fe0b5b1d46b4ae20aa0f6d0e30ba:7de60f9cdee34ce7b6322d384dd6c0f1@sentry.io/1222602'
+    winner_secret: ${WINNER_SECRET}
+    BOUNCE_EMAIL: ${BOUNCE_EMAIL}

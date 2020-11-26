@@ -1,0 +1,15 @@
+region: us-east-1
+
+function_name: post_ingest
+handler: service.handler
+description: Consume and process post events.
+runtime: python3.8
+
+aws_access_key_id:
+aws_secret_access_key:
+
+timeout: 10
+memory_size: 128
+
+environment_variables:
+    BOUNCE_EMAIL: test@example.com
