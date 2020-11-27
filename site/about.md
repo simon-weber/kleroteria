@@ -45,4 +45,4 @@ Our privacy policy is available [here](/privacy).
 
 #### Code
 
-Kleroteria is source-available. You can find the code [on GitHub](https://github.com/simon-weber/kleroteria).
+Kleroteria is open source. You can find the code [on GitHub](https://github.com/simon-weber/kleroteria).
