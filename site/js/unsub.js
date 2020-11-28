@@ -22,7 +22,7 @@ function submitUnsub() {
   const id = urlParams.id;
   const address = urlParams.address;
 
-  k8aListSQS.sendMessage({MessageBody: JSON.stringify(['unsubscribe', address, id])}, function (err, data) {
+  k8aListSQS.makeUnauthenticatedRequest('sendMessage', {MessageBody: JSON.stringify(['unsubscribe', address, id])}, function (err, data) {
     document.getElementById('spinner').style.display = 'none';
     document.getElementById('unsub-success').style.display = '';
     console.log(err, data);

@@ -86,7 +86,7 @@ function queueMessage(address) {
   gtag('event', 'sub', {
     'event_category': 'mainList',
   });
-  k8aListSQS.sendMessage({MessageBody: JSON.stringify(['subscribe', address, null])}, function (err, data) {
+  k8aListSQS.makeUnauthenticatedRequest('sendMessage', {MessageBody: JSON.stringify(['subscribe', address, null])}, function (err, data) {
     document.getElementById('invalid-email').style.display = 'none';
     document.getElementById('email-suggestion').style.display = 'none';
     document.getElementById('signup-form').style.display = 'none';

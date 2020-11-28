@@ -39,7 +39,7 @@ function submitPost(){
     return;
   }
 
-  k8aPostSQS.sendMessage({MessageBody: JSON.stringify(['submit', urlParams.id, urlParams.n, postContents, subjectContents])}, function (err, data) {
+  k8aPostSQS.makeUnauthenticatedRequest('sendMessage', {MessageBody: JSON.stringify(['submit', urlParams.id, urlParams.n, postContents, subjectContents])}, function (err, data) {
     var postFormRelateds = document.getElementsByClassName('post-form-related');
     for (var i = 0; i < postFormRelateds.length; i++) {
       postFormRelateds.item(i).style.display = 'none';
