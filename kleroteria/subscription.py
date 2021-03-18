@@ -25,12 +25,16 @@ class InvalidEmail(Exception):
     pass
 
 
-class ListEvent(namedtuple('ListEvent', ('action', 'address', 'address_id'))):
+class ListEvent(namedtuple('ListEvent', ('action', 'address', 'address_id', 'honeypot'))):
     __slots__ = ()
 
     @classmethod
     def from_json(cls, s):
-        return cls(*json.loads(s))
+        raw = json.loads(s)
+        if len(raw) == 3:
+            # default honeypot field
+            raw.append(None)
+        return cls(*raw)
 
     def to_json(self):
         return json.dumps(self)
@@ -40,12 +44,11 @@ def is_valid_email(address):
     return EMAIL_PATTERN.match(address)
 
 
-def subscribe(botos, address):
-    logger.info("subscribe %r", address)
+def subscribe(botos, address, honeypot=None):
+    logger.info("subscribe %r / %r", address, honeypot)
 
-    if address.endswith("mail.ru") or address.endswith("yandex.ru"):
-        # these generate a lot of spam complaints for some reason
-        logger.warning("ignoring possible spam address: %r", address)
+    if honeypot:
+        logger.info("rejecting honeypotted signup: %r / %r", address, honeypot)
         return None, None, None
 
     if not is_valid_email(address):

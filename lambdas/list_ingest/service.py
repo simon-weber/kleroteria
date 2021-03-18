@@ -42,7 +42,7 @@ def handler(event, context):
                 event = subscription.ListEvent.from_json(body)
                 logger.info("event is %r", event)
                 if event.action == 'subscribe':
-                    result = subscription.subscribe(settings.botos, event.address)
+                    result = subscription.subscribe(settings.botos, event.address, event.honeypot)
                 elif event.action == 'unsubscribe':
                     result = subscription.unsubscribe(settings.botos, event.address, event.address_id)
                 else:

@@ -82,11 +82,12 @@ function submitSignup(){
 }
 
 function queueMessage(address) {
-  console.info("sending", address)
+  const username = document.getElementById('usernameInput').value;
+  console.info("sending", address, username);
   gtag('event', 'sub', {
     'event_category': 'mainList',
   });
-  k8aListSQS.makeUnauthenticatedRequest('sendMessage', {MessageBody: JSON.stringify(['subscribe', address, null])}, function (err, data) {
+  k8aListSQS.makeUnauthenticatedRequest('sendMessage', {MessageBody: JSON.stringify(['subscribe', address, null, username])}, function (err, data) {
     document.getElementById('invalid-email').style.display = 'none';
     document.getElementById('email-suggestion').style.display = 'none';
     document.getElementById('signup-form').style.display = 'none';

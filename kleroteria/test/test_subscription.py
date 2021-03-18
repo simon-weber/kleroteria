@@ -10,7 +10,7 @@ def test_lambda_subscriptions(botos, list_ingest):
 
     # subscribe
     queue.send_message(
-        MessageBody=subscription.ListEvent('subscribe', 'test@example.com', None).to_json(),
+        MessageBody=json.dumps(['subscribe', 'test@example.com', None, '']),
     )
 
     res = botos.client('lambda').invoke(
@@ -32,8 +32,7 @@ def test_lambda_subscriptions(botos, list_ingest):
 
     # unsubscribe
     queue.send_message(
-        MessageBody=subscription.ListEvent(
-            'unsubscribe', returned[0][0]['a'], returned[0][0]['id']).to_json(),
+        MessageBody=json.dumps(['unsubscribe', returned[0][0]['a'], returned[0][0]['id']]),
     )
 
     res = botos.client('lambda').invoke(
@@ -63,15 +62,11 @@ def test_valid_email():
     assert not subscription.is_valid_email('foo@example')
 
 
-def test_ignores_mailru_address(botos):
-    r = subscription.subscribe(botos, 'test@mail.ru')
+def test_ignores_honeypotted_signup(botos):
+    r = subscription.subscribe(botos, 'test@example.com', 'anything')
     assert r == (None, None, None)
     assert len(subscription.get_subscribers(botos)) == 0
 
-def test_ignores_yandexru_address(botos):
-    r = subscription.subscribe(botos, 'test@yandex.ru')
-    assert r == (None, None, None)
-    assert len(subscription.get_subscribers(botos)) == 0
 
 def test_manual_email_dry_run(botos):
     item1, _, _ = subscription.subscribe(botos, 'test1@example.com')
