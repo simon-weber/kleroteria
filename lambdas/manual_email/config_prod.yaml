@@ -6,7 +6,7 @@ description: Send one-off emails to the list.
 runtime: python3.8
 role: k8a_lambda_ingest_role
 
-timeout: 300
+timeout: 900
 memory_size: 128
 
 environment_variables:
