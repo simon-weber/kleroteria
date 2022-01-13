@@ -182,7 +182,8 @@ def unsubscribe(botos, address, address_id):
         )
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
-            raise AddressMismatch
+            logger.warning("no unsub match for %r %r", address, address_id)
+            return
         raise
 
     return r

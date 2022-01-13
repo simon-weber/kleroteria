@@ -1,7 +1,5 @@
 import json
 
-import pytest
-
 from kleroteria import settings, subscription
 
 
@@ -25,10 +23,8 @@ def test_lambda_subscriptions(botos, list_ingest):
     assert queue.attributes['ApproximateNumberOfMessages'] == '0'
     assert queue.attributes['ApproximateNumberOfMessagesNotVisible'] == '0'
 
-    # unsubscribe, address mismatch
-    # not easily run through lambda since the exception doesn't propogate
-    with pytest.raises(subscription.AddressMismatch):
-        subscription.unsubscribe(botos, None, returned[0][0]['id'])
+    # unsubscribe, address mismatch; noop
+    subscription.unsubscribe(botos, None, returned[0][0]['id'])
 
     # unsubscribe
     queue.send_message(
@@ -106,3 +102,12 @@ def test_manual_email_lambda(botos, manual_email):
     subscription.unsubscribe(botos, 'test1@example.com', item1['id'])
     subscription.unsubscribe(botos, 'test2@example.com', item2['id'])
     assert len(subscription.get_subscribers(botos)) == 0
+
+
+def test_unsub_mismatch(botos):
+    item1, _, _ = subscription.subscribe(botos, 'test1@example.com')
+    assert len(subscription.get_subscribers(botos)) == 1
+
+    result = subscription.unsubscribe(botos, 'test1@example.com', 'invalid')
+    assert result is None
+    assert len(subscription.get_subscribers(botos)) == 1
