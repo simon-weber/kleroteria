@@ -72,7 +72,7 @@ pytest==3.6.0             # via -r dev-requirements.in
 python-coveralls==2.9.3   # via localstack
 python-dateutil==2.7.3    # via -r requirements.txt, botocore, moto-ext
 python-jose==3.1.0        # via moto-ext
-git+https://github.com/simon-weber/python-lambda.git@3.2.7-rc.1#egg=python-lambda==3.2.7-rc.1  # via -r dev-requirements.in
+git+https://github.com/simon-weber/python-lambda.git@3.2.7-rc.2#egg=python-lambda==3.2.7-rc.2  # via -r dev-requirements.in
 pytz==2019.3              # via moto-ext
 pyyaml==5.1               # via awscli, cfn-lint, flask-swagger, localstack, moto-ext, python-coveralls, python-lambda
 raven==6.9.0              # via -r requirements.txt, kleroteria

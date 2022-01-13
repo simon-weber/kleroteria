@@ -4,4 +4,4 @@ localstack[full]
 localstack-client
 pip-tools
 pytest
-git+https://github.com/simon-weber/python-lambda.git@3.2.7-rc.1#egg=python-lambda==3.2.7-rc.1
+git+https://github.com/simon-weber/python-lambda.git@3.2.7-rc.2#egg=python-lambda==3.2.7-rc.2
