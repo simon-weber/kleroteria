@@ -250,28 +250,31 @@ def send_post(botos, scan_limit=None, sleep_secs=1, dry_run=True):
         html_body = html_template.format_map(context)
 
         logger.info("sending post to %r", sub_address)
-        r = botos.client('ses').send_email(
-            Source=settings.noreply_k8a_email,
-            ReplyToAddresses=[settings.reply_to_email],
-            ReturnPath=settings.bounce_email,
-            Destination={
-                'ToAddresses': [sub_address],
-            },
-            Message={
-                'Subject': {
-                    'Data': subject,
+        try:
+            r = botos.client('ses').send_email(
+                Source=settings.noreply_k8a_email,
+                ReplyToAddresses=[settings.reply_to_email],
+                ReturnPath=settings.bounce_email,
+                Destination={
+                    'ToAddresses': [sub_address],
                 },
-                'Body': {
-                    'Text': {
-                        'Data': text_body,
+                Message={
+                    'Subject': {
+                        'Data': subject,
                     },
-                    'Html': {
-                        'Data': html_body,
-                    }
+                    'Body': {
+                        'Text': {
+                            'Data': text_body,
+                        },
+                        'Html': {
+                            'Data': html_body,
+                        }
+                    },
                 },
-            },
-        )
-        logger.info("post ses response: %r", r)
+            )
+            logger.info("post ses response: %r", r)
+        except Exception:
+            logger.exception("failed to send post to %r", sub_address)
 
     if not dry_run:
         posts.delete_item(Key={'id': post['id']['S']})
