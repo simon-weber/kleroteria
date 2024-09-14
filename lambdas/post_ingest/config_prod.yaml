@@ -3,7 +3,7 @@ region: us-east-1
 function_name: post_ingest
 handler: service.handler
 description: Consume and process post events.
-runtime: python3.8
+runtime: python3.9
 role: k8a_lambda_ingest_role
 
 timeout: 900
