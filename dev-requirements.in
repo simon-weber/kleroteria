@@ -1,7 +1,7 @@
 -r requirements.txt
 -e file:.#egg=kleroteria==0.0.1
-localstack[full]
-localstack-client
+# localstack[full]
+# localstack-client
 pip-tools
 pytest
 git+https://github.com/simon-weber/python-lambda.git@3.2.7-rc.2#egg=python-lambda==3.2.7-rc.2
