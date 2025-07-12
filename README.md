@@ -10,5 +10,5 @@ For more information about how it works, see [Running Kleroteria for free by (ab
 * `make init`
 
 ## dev
-* serve locally: `make localstack` then in another shell `make fixtures`. The site runs at localhost:4000. Use `make invoke_*` to run the various lambdas.
+* serve locally: `make localstack` then in another shell `make fixtures`. The site runs at localhost:4000. Use `make invoke-*` to run the various lambdas.
 * run tests: `make test`

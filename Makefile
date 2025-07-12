@@ -10,18 +10,21 @@ localstack:
 	cd site && \
 	bundle exec jekyll serve --host=0.0.0.0
 
+restart-localstack:
+	localstack restart && localstack wait
+
 fixtures:
 	python -c 'from kleroteria.test.aws_fixtures import main; main()'
 
-invoke_list:
+invoke-list:
 	cd lambdas/list_ingest/ && \
 	lambda invoke
 
-invoke_post:
+invoke-post:
 	cd lambdas/post_ingest/ && \
 	lambda invoke
 
-invoke_lottery:
+invoke-lottery:
 	cd lambdas/post_ingest/ && \
 	bash -c 'lambda invoke --event-file=<(echo -n "{\"action\": \"pick_winner\", \"secret\": \"dummy_secret\"}")'
 

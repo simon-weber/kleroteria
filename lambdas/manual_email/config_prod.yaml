@@ -3,7 +3,7 @@ region: us-east-1
 function_name: manual_email
 handler: service.handler
 description: Send one-off emails to the list.
-runtime: python3.9
+runtime: python3.10
 role: k8a_lambda_ingest_role
 
 timeout: 900
