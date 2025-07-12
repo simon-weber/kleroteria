@@ -5,12 +5,13 @@ init:
 	echo "also, manually install a jdk and https://github.com/netlify/netlifyctl"
 
 localstack:
-	SERVICES=ses,lambda,sqs,dynamodb localstack start --host &\
+	LOCALSTACK_SERVICES=ses,lambda,sqs,dynamodb localstack start --docker --detached --no-banner && \
+	localstack wait && \
 	cd site && \
 	bundle exec jekyll serve --host=0.0.0.0
 
 fixtures:
-	python kleroteria/test/aws_fixtures.py
+	python -c 'from kleroteria.test.aws_fixtures import main; main()'
 
 invoke_list:
 	cd lambdas/list_ingest/ && \
@@ -53,9 +54,10 @@ test:
 
 pip-compile:
 	# python-lambda can't handle inline comments
-	pip-compile -r --no-annotate --output-file requirements.txt setup.py && \
-	pip-compile -r dev-requirements.in && \
-	pip-compile -r lambda-requirements.in && \
+	pip-compile -r --no-annotate --output-file all-requirements.txt all-requirements.in setup.py && \
+	pip-compile -r -c all-requirements.txt --no-annotate --output-file requirements.txt setup.py && \
+	pip-compile -r -c all-requirements.txt dev-requirements.in && \
+	pip-compile -r -c all-requirements.txt lambda-requirements.in && \
 	pip-sync dev-requirements.txt
 
 viewdead:

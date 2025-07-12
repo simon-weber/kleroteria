@@ -30,8 +30,8 @@ if is_prod:
 else:
     import localstack_client.session
     botos = localstack_client.session.Session()
-    list_queue_url = 'http://localhost:4576/queue/k8aListQueue'
-    post_queue_url = 'http://localhost:4576/queue/k8aPostQueue'
+    list_queue_url = 'http://localhost:4576/000000000000/k8aListQueue'
+    post_queue_url = 'http://localhost:4576/000000000000/k8aPostQueue'
     url_prefix = 'http://127.0.0.1:4000'
     queue_wait_secs = 1
     ingest_soft_timeout_secs = 1

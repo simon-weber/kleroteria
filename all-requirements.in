@@ -1,0 +1,2 @@
+-r dev-requirements.in
+-r lambda-requirements.in

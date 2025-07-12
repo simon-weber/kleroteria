@@ -1,4 +1,5 @@
 import os
+import time
 
 from aws_lambda import aws_lambda
 
@@ -7,6 +8,11 @@ from kleroteria import settings
 
 def create_dynamo(botos):
     dbc = botos.client('dynamodb')
+
+    try:
+        dbc.delete_table(TableName='k8aAddresses2')
+    except dbc.exceptions.ResourceNotFoundException:
+        pass
     dbc.create_table(
         TableName='k8aAddresses2',
         KeySchema=[
@@ -27,6 +33,10 @@ def create_dynamo(botos):
         }
     )
 
+    try:
+        dbc.delete_table(TableName='k8aPosts')
+    except dbc.exceptions.ResourceNotFoundException:
+        pass
     dbc.create_table(
         TableName='k8aPosts',
         KeySchema=[
@@ -62,6 +72,7 @@ def create_lambda(botos, names=None):
 
     aws_lambda.get_client = local_get_client
     aws_lambda.get_account_id = local_get_account
+    lc = botos.client('lambda')
 
     here = os.path.dirname(os.path.realpath(__file__))
 
@@ -69,6 +80,13 @@ def create_lambda(botos, names=None):
         names = ['list_ingest', 'post_ingest', 'manual_email']
 
     for func_name in names:
+        try:
+            lc.get_function(FunctionName=func_name)
+        except lc.exceptions.ResourceNotFoundException:
+            pass
+        else:
+            break
+
         src = os.path.join(here, os.pardir, os.pardir, 'lambdas', func_name)
         requirements = os.path.join(here, os.pardir, os.pardir, 'lambda-requirements.txt')
 
@@ -81,6 +99,8 @@ def create_lambda(botos, names=None):
         )
         aws_lambda.create_function(cfg, path_to_zip_file)
 
+    # Wait on the last function to be active.
+    time.sleep(2)
 
 def create_ses(botos):
     ses = botos.client('ses')
@@ -100,6 +120,5 @@ def create(botos, with_lambda=True):
     if with_lambda:
         create_lambda(botos)
 
-
-if __name__ == '__main__':
+def main():
     create(settings.botos)

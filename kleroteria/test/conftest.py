@@ -1,20 +1,6 @@
 import pytest
 
 
-@pytest.fixture(scope='session', autouse=True)
-def localstack():
-    from localstack.services import infra
-    infra.start_infra(
-        asynchronous=True,
-        apis=[
-            'ses', 'lambda', 'sqs', 'dynamodb',
-            'cloudwatch',  # required for lambda to work
-        ],
-    )
-    yield
-    infra.stop_infra()
-
-
 @pytest.fixture(scope='session')
 def botos():
     from kleroteria import settings
