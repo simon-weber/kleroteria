@@ -24,12 +24,12 @@ raven_client = LambdaClient(
 
 @raven_client.capture_exceptions
 def handler(event, context):
-    if isinstance(event, collections.Mapping) and event.get('action') == 'pick_winner':
+    if isinstance(event, collections.abc.Mapping) and event.get('action') == 'pick_winner':
         # TODO move these to another queue/function to avoid the need for a secret
         if event['secret'] != os.environ['winner_secret']:
             raise ValueError('pick_winner attempted with invalid shared secret')
         return lottery.pick_winner(settings.botos, winner_override_address=event.get('winner_override_address'))
-    if isinstance(event, collections.Mapping) and event.get('action') == 'send_post':
+    if isinstance(event, collections.abc.Mapping) and event.get('action') == 'send_post':
         if event['secret'] != os.environ['winner_secret']:
             raise ValueError('send_post attempted with invalid shared secret')
         return lottery.send_post(settings.botos, dry_run=event.get('dry_run', True))

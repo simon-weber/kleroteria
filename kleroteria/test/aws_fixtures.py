@@ -59,8 +59,13 @@ def create_dynamo(botos):
 
 
 def create_sqs(botos):
-    botos.client('sqs').create_queue(QueueName='k8aListQueue')
-    botos.client('sqs').create_queue(QueueName='k8aPostQueue')
+    sqsc = botos.client('sqs')
+
+    res = sqsc.create_queue(QueueName='k8aListQueue')
+    sqsc.purge_queue(QueueUrl=res['QueueUrl'])
+
+    res = sqsc.create_queue(QueueName='k8aPostQueue')
+    sqsc.purge_queue(QueueUrl=res['QueueUrl'])
 
 
 def create_lambda(botos, names=None):
@@ -80,12 +85,13 @@ def create_lambda(botos, names=None):
         names = ['list_ingest', 'post_ingest', 'manual_email']
 
     for func_name in names:
+        exists = False
         try:
             lc.get_function(FunctionName=func_name)
         except lc.exceptions.ResourceNotFoundException:
             pass
         else:
-            break
+            exists = True
 
         src = os.path.join(here, os.pardir, os.pardir, 'lambdas', func_name)
         requirements = os.path.join(here, os.pardir, os.pardir, 'lambda-requirements.txt')
@@ -97,7 +103,10 @@ def create_lambda(botos, names=None):
             src, config_file='config.yaml',
             requirements=requirements,
         )
-        aws_lambda.create_function(cfg, path_to_zip_file)
+        if not exists:
+            aws_lambda.create_function(cfg, path_to_zip_file)
+        else:
+            aws_lambda.update_function(cfg, path_to_zip_file, cfg)
 
     # Wait on the last function to be active.
     time.sleep(2)

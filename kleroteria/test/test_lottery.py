@@ -115,7 +115,8 @@ def test_lambda_submits(botos, post_ingest):
     res = botos.client('lambda').invoke(
         FunctionName='post_ingest',
     )
-    returned = json.loads(res['Payload'].read())['results']
+    payload = res['Payload'].read()
+    returned = json.loads(payload)['results']
 
     assert len(returned) == 1
     winner_nonce, post_r, address_r = returned[0]
