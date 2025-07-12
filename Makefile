@@ -25,12 +25,14 @@ invoke_lottery:
 	cd lambdas/post_ingest/ && \
 	bash -c 'lambda invoke --event-file=<(echo -n "{\"action\": \"pick_winner\", \"secret\": \"dummy_secret\"}")'
 
-deploy-all:
+deploy-site:
 	cd site && \
 	rm -rf _netlify && \
 	JEKYLL_ENV=production bundle exec jekyll build -d _netlify && \
 	cd .. && \
-	netlifyctl deploy -b site/_netlify && \
+	netlifyctl deploy -b site/_netlify
+
+deploy-lambda:
 	cd lambdas/list_ingest/ && \
 	lambda deploy --config-file config_prod.yaml --requirements ../../lambda-requirements.txt && \
 	cd ../post_ingest/ && \
@@ -38,12 +40,7 @@ deploy-all:
 	cd ../manual_email/ && \
 	lambda deploy --config-file config_prod.yaml --requirements ../../lambda-requirements.txt
 
-deploy-site:
-	cd site && \
-	rm -rf _netlify && \
-	JEKYLL_ENV=production bundle exec jekyll build -d _netlify && \
-	cd .. && \
-	netlifyctl deploy -b site/_netlify
+deploy-all: deploy-site deploy-lambda
 
 clean:
 	rm -rf /tmp/aws-lambda* && \
